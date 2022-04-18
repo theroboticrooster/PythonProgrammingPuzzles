@@ -100,24 +100,28 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
 
     while n > 0:
         m = min(n, max_batch)
-
-        # res = openai.Completion.create(
-        #     engine="davinci-msft",
-        #     prompt=prompt,
-        #     max_tokens=max_tokens,
-        #     temperature=temp,
-        #     n=m,
-        #     stop=stop or None
-        # )
-
+        print('------------------')
         print(prompt)
+        res = openai.Completion.create(
+            engine="davinci-msft",
+            prompt=prompt,
+            max_tokens=max_tokens,
+            temperature=temp,
+            n=m,
+            stop=stop or None
+        )
 
-        res = generator(
-                inputs = prompt,
-                max_length = max_tokens,
-                temperature = temp,
-                num_return_sequences = m
-                )
+        print('------------------')
+        print(res)
+
+        # print(prompt)
+
+        # res = generator(
+        #         inputs = prompt,
+        #         max_length = max_tokens,
+        #         temperature = temp,
+        #         num_return_sequences = m
+        #         )
 
         new += [c["text"] for c in res["choices"]]
         n -= m
