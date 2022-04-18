@@ -6,8 +6,6 @@ import time
 import datetime
 # from transformers import pipeline
 from transformers import GPTNeoForCausalLM, GPT2Tokenizer
-# 
-model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
