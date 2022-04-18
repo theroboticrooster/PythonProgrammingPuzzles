@@ -84,13 +84,13 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         pass
         1/0
     assert not cache_only, "Entry not found in cache"
-    if verbose:
-        print("/"*100)
-        print("Querying GPT3 with prompt:")
-        print(prompt)
-        s = stop and stop.replace('\n', '\\n')
-        print(f"/// n={n} ({n-len(cached)} new) max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
-        print("/"*100)
+    # if verbose:
+    #     print("/"*100)
+    #     print("Querying GPT3 with prompt:")
+    #     print(prompt)
+    #     s = stop and stop.replace('\n', '\\n')
+    #     print(f"/// n={n} ({n-len(cached)} new) max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
+    #     print("/"*100)
 
     time0 = time.perf_counter()
 
@@ -105,6 +105,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     while n > 0:
         m = min(n, max_batch)
         print('------------------')
+        print(m)
         print(prompt)
 
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
