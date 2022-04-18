@@ -4,7 +4,10 @@ import json
 import ezlog
 import time
 import datetime
-from transformers import pipeline
+# from transformers import pipeline
+from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+# 
+model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-1.3B")
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
@@ -96,34 +99,39 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     new = []
     n -= len(cached)
 
-    generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+    # generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+    model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
+    tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+
 
     while n > 0:
         m = min(n, max_batch)
         print('------------------')
         print(prompt)
-        res = openai.Completion.create(
-            engine="davinci-msft",
-            prompt=prompt,
-            max_tokens=max_tokens,
-            temperature=temp,
-            n=m,
-            stop=stop or None
-        )
+
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+
+        # res = openai.Completion.create(
+        #     engine="davinci-msft",
+        #     prompt=prompt,
+        #     max_tokens=max_tokens,
+        #     temperature=temp,
+        #     n=m,
+        #     stop=stop or None
+        # )
+
+        res_tokens = model.generate(
+                inputs = input_ids,
+                max_length = max_tokens,
+                temperature = temp,
+                num_return_sequences = m
+                )
+        res = tokenizer.batch_decode(res_tokens)
 
         print('------------------')
         print(res)
-
-        # print(prompt)
-
-        # res = generator(
-        #         inputs = prompt,
-        #         max_length = max_tokens,
-        #         temperature = temp,
-        #         num_return_sequences = m
-        #         )
-
-        new += [c["text"] for c in res["choices"]]
+        new += res
+        # new += [c["text"] for c in res["choices"]]
         n -= m
 
     _save_line((key, new), f"{time.perf_counter() - time0:.1f}s {datetime.datetime.now()}")
