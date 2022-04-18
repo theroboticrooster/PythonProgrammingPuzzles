@@ -110,6 +110,8 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         #     stop=stop or None
         # )
 
+        print(prompt)
+
         res = generator(
                 inputs = prompt,
                 max_length = max_tokens,
