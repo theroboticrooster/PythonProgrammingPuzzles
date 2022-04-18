@@ -126,6 +126,7 @@ def prompt_experiment(filename, prefix="", n=1000, temp=0.9, stop="\n", timeout=
     puzzles = load_puzzles(filename, add_docstring)
     prefix = re.sub(r" +$", "", (prefix or "").lstrip(), flags=re.M)  # delete leading/trailing whitespace on each line
     prompts = get_prompts(prefix, [f for ft, f in puzzles])
+    print(prompts)
 
     successes = []
     for p_num, ((ft, f), prompt) in tqdm(enumerate(zip(puzzles, prompts)), total=len(puzzles)):
