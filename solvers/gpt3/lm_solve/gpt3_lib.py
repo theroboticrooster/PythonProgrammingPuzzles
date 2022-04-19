@@ -102,10 +102,11 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
 
     while n > 0:
         m = min(n, max_batch)
-        print('------------------')
+        # print('------------------')
+        # print(m)
+        # print(max_tokens)
         print(m)
-        print(max_tokens)
-        print(prompt)
+        # print(prompt)
 
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
@@ -126,8 +127,8 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
                 )
         res = tokenizer.batch_decode(res_tokens)
 
-        print('------------------')
-        print(res)
+        # print('------------------')
+        # print(res)
         new += res
         # new += [c["text"] for c in res["choices"]]
         n -= m
