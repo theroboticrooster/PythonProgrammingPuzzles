@@ -125,11 +125,11 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
 
         res_tokens = model.generate(
                 inputs = input_ids,
-                # max_length = max_tokens,
-                temperature = temp
-                # num_return_sequences = m
+                max_new_tokens = max_tokens,
+                temperature = temp,
+                num_return_sequences = m,
+                do_sample=True
                 )
-
 
         # res = generator(prompt, do_sample=True, temperature=temp)
         res = tokenizer.batch_decode(res_tokens)
