@@ -123,7 +123,7 @@ def run(seed=0):
             # lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
             lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
     problems_solved = [sorted([i for i, (f, gs) in enumerate(s) if gs]) for s in sols]
-    exit()
+    # exit()
     bootstrap = lm_solve.bootstrap(**BOOTSTRAP_PARAMS, seed=seed)
     print(f"run={seed} ALL DONE!\n\n")
     print(f"run={seed} RESULTS " + "=" * 50)
