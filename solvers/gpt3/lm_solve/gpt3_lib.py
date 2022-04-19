@@ -133,7 +133,8 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         )
 
 
-        new += list(dict.fromkeys([c['generated_text'] for c in res]))
+        # new += list(dict.fromkeys([c['generated_text'] for c in res]))
+        new += [c['generated_text'] for c in res]
 
         print(new)
 
