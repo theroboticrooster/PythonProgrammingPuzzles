@@ -111,7 +111,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         print(prompt)
         # print(prompt)
 
-        # input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
 
         # res = openai.Completion.create(
