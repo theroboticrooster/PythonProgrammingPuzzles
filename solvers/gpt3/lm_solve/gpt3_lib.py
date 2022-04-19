@@ -5,14 +5,13 @@ import ezlog
 import time
 import datetime
 import requests
-from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+# from transformers import GPTNeoForCausalLM, GPT2Tokenizer
+from transformers import pipeline
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
 
-model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
-tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-# generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+generator = pipeline('text-generation', model='EleutherAI/gpt-neo-1.3B')
 
 _CACHE_PATH = os.path.join(os.path.dirname(__file__), "../.cache")
 _CACHE_FILENAME = os.path.join(_CACHE_PATH, "gpt3.cache")
@@ -113,19 +112,30 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         # )
         # new += [c["text"] for c in res["choices"]]
 
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
+        # input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
-        res_tokens = model.generate(
-            inputs = input_ids,
-            max_new_tokens = max_tokens,
-            temperature = temp,
+        # res_tokens = model.generate(
+        #     inputs = input_ids,
+        #     max_new_tokens = max_tokens,
+        #     temperature = temp,
+        #     num_return_sequences = m,
+        #     do_sample=True
+        # )
+
+        # res = tokenizer.batch_decode(res_tokens)
+
+        res = generator(
+            text_inputs = prompt,
+            max_length = max_tokens,
             num_return_sequences = m,
+            return_full_text=False,
             do_sample=True
         )
 
-        res = tokenizer.batch_decode(res_tokens)
-        print(res[0])
-        new += res
+
+        new += list(dict.fromkeys([c['generated_text'] for c in res]))
+
+        print(new)
 
         n -= m
 
