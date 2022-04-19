@@ -10,7 +10,8 @@ from transformers import GPTNeoForCausalLM, GPT2Tokenizer
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
 
-
+model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
+tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
 
 _CACHE_PATH = os.path.join(os.path.dirname(__file__), "../.cache")
 _CACHE_FILENAME = os.path.join(_CACHE_PATH, "gpt3.cache")
@@ -98,14 +99,12 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     n -= len(cached)
 
     # generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
-    model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
-    tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-
 
     while n > 0:
         m = min(n, max_batch)
         print('------------------')
         print(m)
+        print(max_tokens)
         print(prompt)
 
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
