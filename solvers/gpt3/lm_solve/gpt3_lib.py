@@ -124,6 +124,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         )
 
         res = tokenizer.batch_decode(res_tokens)
+        print(res[0])
         new += res
 
         n -= m
