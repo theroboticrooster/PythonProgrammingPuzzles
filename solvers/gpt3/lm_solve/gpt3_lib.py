@@ -60,7 +60,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         print("Querying GPT-Neo with prompt:")
         print(prompt)
         s = stop and stop.replace('\n', '\\n')
-        print(f"/// n={n} (new) max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
+        print(f"/// n={n} max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
         print("/"*100)
 
     while n > 0:
