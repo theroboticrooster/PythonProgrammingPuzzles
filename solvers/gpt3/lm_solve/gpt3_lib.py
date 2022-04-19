@@ -4,7 +4,7 @@ import json
 import ezlog
 import time
 import datetime
-# from transformers import pipeline
+import requests
 from transformers import GPTNeoForCausalLM, GPT2Tokenizer
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
@@ -85,6 +85,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     if cache_only:
         pass
         1/0
+
     assert not cache_only, "Entry not found in cache"
     if verbose:
         print("/"*100)
@@ -99,17 +100,8 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     new = []
     n -= len(cached)
 
-    # generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
-
     while n > 0:
         m = min(n, max_batch)
-        # print('------------------')
-        # print(m)
-        # print(max_tokens)
-        # print(prompt)
-
-        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
-
 
         # res = openai.Completion.create(
         #     engine="davinci-msft",
@@ -119,6 +111,9 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         #     n=m,
         #     stop=stop or None
         # )
+        # new += [c["text"] for c in res["choices"]]
+
+        input_ids = tokenizer(prompt, return_tensors="pt").input_ids
 
         res_tokens = model.generate(
             inputs = input_ids,
@@ -128,13 +123,9 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
             do_sample=True
         )
 
-        # res = generator(prompt, do_sample=True, temperature=temp)
         res = tokenizer.batch_decode(res_tokens)
-
-        # print('------------------')
-        # print(res)
         new += res
-        # new += [c["text"] for c in res["choices"]]
+
         n -= m
 
     _save_line((key, new), f"{time.perf_counter() - time0:.1f}s {datetime.datetime.now()}")
