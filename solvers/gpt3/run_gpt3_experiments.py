@@ -118,9 +118,9 @@ def run(seed=0):
     #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
     #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
     sols = [
-            lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
+            # lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
             lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
-            lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)
+            # lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)
             ]
     problems_solved = [sorted([i for i, (f, gs) in enumerate(s) if gs]) for s in sols]
     # exit()
