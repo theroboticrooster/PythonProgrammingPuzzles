@@ -13,11 +13,11 @@ import numpy as np
 PARAMS = dict(
     temp=0.9,
     timeout=1.0,  # seconds to judge
-    # n=10 * 1000,
-    n = 100,
+    n=10 * 1000,
     filename="puzzles_with_descriptions.json",
     stop="\n",
     cache_only=False,  # change this to True if you want to run a 2nd time without risking hitting API
+    max_tokens = 550
 )
 
 BOOTSTRAP_PARAMS = dict(
@@ -119,9 +119,10 @@ def run(seed=0):
     #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
     #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
     sols = [
-            # lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
-            # lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
-            lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
+            lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
+            lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
+            lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)
+            ]
     problems_solved = [sorted([i for i, (f, gs) in enumerate(s) if gs]) for s in sols]
     # exit()
     bootstrap = lm_solve.bootstrap(**BOOTSTRAP_PARAMS, seed=seed)
