@@ -16,8 +16,7 @@ PARAMS = dict(
     n=10 * 1000,
     filename="puzzles_with_descriptions.json",
     stop="\n",
-    cache_only=False,  # change this to True if you want to run a 2nd time without risking hitting API
-    max_tokens = 550
+    cache_only=False  # change this to True if you want to run a 2nd time without risking hitting API
 )
 
 BOOTSTRAP_PARAMS = dict(
