@@ -10,9 +10,9 @@ from transformers import GPTNeoForCausalLM, GPT2Tokenizer
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
 
-# model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
-# tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
-generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+model = GPTNeoForCausalLM.from_pretrained("EleutherAI/gpt-neo-125M")
+tokenizer = GPT2Tokenizer.from_pretrained("EleutherAI/gpt-neo-125M")
+# generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
 
 _CACHE_PATH = os.path.join(os.path.dirname(__file__), "../.cache")
 _CACHE_FILENAME = os.path.join(_CACHE_PATH, "gpt3.cache")
@@ -123,19 +123,19 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         #     stop=stop or None
         # )
 
-        # res_tokens = model.generate(
-        #         inputs = input_ids,
-        #         max_length = max_tokens,
-        #         temperature = temp
-        #         # num_return_sequences = m
-        #         )
+        res_tokens = model.generate(
+                inputs = input_ids,
+                # max_length = max_tokens,
+                temperature = temp
+                # num_return_sequences = m
+                )
 
 
-        res = generator(prompt, do_sample=True, temperature=temp)
-        # res = tokenizer.batch_decode(res_tokens)
+        # res = generator(prompt, do_sample=True, temperature=temp)
+        res = tokenizer.batch_decode(res_tokens)
 
         # print('------------------')
-        print(res)
+        # print(res)
         new += res
         # new += [c["text"] for c in res["choices"]]
         n -= m
