@@ -67,7 +67,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
     while n > 0:
         res = generator(
             text_inputs = prompt,
-            max_length = 550,
+            max_length = 150,
             num_return_sequences = 1,
             return_full_text=False
         )
