@@ -106,6 +106,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         # print(m)
         # print(max_tokens)
         print(m)
+        time.sleep(3)
         # print(prompt)
 
         input_ids = tokenizer(prompt, return_tensors="pt").input_ids
