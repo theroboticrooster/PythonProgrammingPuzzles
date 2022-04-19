@@ -68,7 +68,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         res = generator(
             text_inputs = prompt,
             max_length = 550,
-            num_return_sequences = 4,
+            num_return_sequences = 1,
             return_full_text=False
         )
         print(list(dict.fromkeys([c['generated_text'] for c in res])))
