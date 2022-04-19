@@ -6,7 +6,7 @@ import time
 import datetime
 import requests
 # from transformers import GPTNeoForCausalLM, GPT2Tokenizer
-from transformers import pipeline
+from transformers import pipeline, StoppingCriteriaList
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
@@ -63,13 +63,16 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         print(f"/// n={n} max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
         print("/"*100)
 
+    stop_criteria = StoppingCriteriaList(generator.tokenizer.encode(stop)) if stop is not None \
+                     else StoppingCriteriaList()
     new = []
     while n > 0:
         res = generator(
             text_inputs = prompt,
-            max_length = 150,
+            max_length = 550,
             num_return_sequences = 1,
-            return_full_text=False
+            return_full_text=False,
+            stopping_criteria = stop_criteria
         )
         print(list(dict.fromkeys([c['generated_text'] for c in res])))
         new += [c['generated_text'] for c in res]
