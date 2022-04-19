@@ -115,8 +115,12 @@ assert True == f5(int(int("123456789" + "0"*9) ** 0.5) + 1)
 
 
 def run(seed=0):
-    sols = [lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
-            lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
+    # sols = [lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
+    #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
+    #         lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
+    sols = [
+            # lm_solve.prompt_experiment(**PARAMS, prefix="", seed=seed),
+            # lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX, seed=seed),
             lm_solve.prompt_experiment(**PARAMS, prefix=PREFIX_DOCSTR, add_docstring=True, seed=seed)]
     problems_solved = [sorted([i for i, (f, gs) in enumerate(s) if gs]) for s in sols]
     bootstrap = lm_solve.bootstrap(**BOOTSTRAP_PARAMS, seed=seed)
