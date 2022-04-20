@@ -13,7 +13,7 @@ import numpy as np
 PARAMS = dict(
     temp=0.9,
     timeout=1.0,  # seconds to judge
-    n= 100,
+    n= 30,
     filename="puzzles_with_descriptions.json",
     stop="\n",
     cache_only=False  # change this to True if you want to run a 2nd time without risking hitting API
