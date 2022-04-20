@@ -6,7 +6,7 @@ import time
 import datetime
 import requests
 # from transformers import GPTNeoForCausalLM, GPT2Tokenizer
-from transformers import pipeline, StoppingCriteriaList
+from transformers import pipeline, StoppingCriteriaList, StoppingCriteria
 
 #assert 'OPENAI_API_KEY' in os.environ, "Need to set environment variable `OPENAI_API_KEY`"
 # openai.api_key = os.environ['OPENAI_API_KEY']
@@ -52,8 +52,6 @@ def _load_cache():
         ezlog.warn("No gpt3 cache yet")
 
 
-
-
 def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes=None, cache_only=False, verbose=True):
     if verbose:
         print("/"*100)
@@ -63,8 +61,7 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
         print(f"/// n={n} max_tokens={max_tokens} temp={temp} max_batch={max_batch} stop={s}")
         print("/"*100)
 
-    stop_criteria = StoppingCriteriaList(generator.tokenizer.encode(stop)) if stop is not None \
-                     else StoppingCriteriaList()
+    eos_token = None if stop is None else generator.tokenizer.encode(stop)[0]
     new = []
     while n > 0:
         res = generator(
@@ -72,9 +69,9 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
             max_length = 550,
             num_return_sequences = 1,
             return_full_text=False,
-            stopping_criteria = stop_criteria
+            eos_token_id=eos_token
         )
-        print(list(dict.fromkeys([c['generated_text'] for c in res])))
+        print(list(dict.fromkeys([c['generated_text'].strip() for c in res])))
         new += [c['generated_text'] for c in res]
         n -= 1
     return new
