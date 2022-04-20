@@ -63,27 +63,17 @@ def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes
 
     eos_token = None if stop is None else generator.tokenizer.encode(stop)[0]
     new = []
-    # while n > 0:
-    #     res = generator(
-    #         text_inputs = prompt,
-    #         max_length = 550,
-    #         num_return_sequences = 1,
-    #         return_full_text=False,
-    #         eos_token_id=eos_token
-    #     )
-    #     print(list(dict.fromkeys([c['generated_text'].strip() for c in res])))
-    #     new += [c['generated_text'] for c in res]
-    #     n -= 1
-    res = generator(
-        text_inputs = prompt,
-        max_length = 550,
-        num_return_sequences = n,
-        return_full_text=False,
-        eos_token_id=eos_token
-    )
-    print(list(dict.fromkeys([c['generated_text'].strip() for c in res])))
-    new += [c['generated_text'].strip() for c in res]
-    # n -= 1
+    while n > 0:
+        res = generator(
+            text_inputs = prompt,
+            max_length = 550,
+            num_return_sequences = 1,
+            return_full_text=False,
+            eos_token_id=eos_token
+        )
+        print(list(dict.fromkeys([c['generated_text'].strip() for c in res])))
+        new += [c['generated_text'] for c in res]
+        n -= 1
     return new
 
 # def query(prompt, n=10, max_tokens=150, temp=1.0, max_batch=32, stop=None, notes=None, cache_only=False, verbose=True):
